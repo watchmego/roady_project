@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjs {
+  provider = "./node_modules/@nowtech/nestjs-prisma-4/lib/generator.js"
+  output   = "../src/_generated/nestjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  supplier
+  contributor
+  user
+}
+
+//----------------------------------
+
+model Organisation {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  name      String
+  users     User[]
+}
+
+model User {
+  id             String        @id @default(uuid()) @db.Uuid
+  createdAt      DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @db.Timestamptz(6)
+  email          String
+  name           String?
+  role           UserRole?
+  organisation   Organisation? @relation(fields: [organisationId], references: [id])
+  organisationId String?       @db.Uuid
+}
