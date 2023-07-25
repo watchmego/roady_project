@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//display rows of users
+
 class SearchRow extends StatelessWidget {
   final String name;
   final String email;

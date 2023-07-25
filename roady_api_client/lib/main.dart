@@ -45,7 +45,6 @@ class MainApp extends StatelessWidget {
 
 //Provider for state
 class APINotifier extends ChangeNotifier {
-
   Widget _currentWidget = OrgPage();
 
   Widget get currentWidget => _currentWidget;
@@ -55,6 +54,8 @@ class APINotifier extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+// app bar to switch between organisation and user view
 
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({Key? key}) : super(key: key);
@@ -94,6 +95,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   }
 }
 
+//Display Users
+
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
@@ -104,7 +107,7 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   List<dynamic>? users;
 
-  // Define the fetchUsers function here
+  // using call_api.dart, fetch users
   void fetchUsers() async {
     try {
       final dynamic result = await queryAPI(getUsers);
@@ -148,6 +151,8 @@ class _UserPageState extends State<UserPage> {
   }
 }
 
+//Display Organisation
+
 class OrgPage extends StatefulWidget {
   const OrgPage({super.key});
 
@@ -155,62 +160,64 @@ class OrgPage extends StatefulWidget {
   State<OrgPage> createState() => _OrgPageState();
 }
 
+
+
 class _OrgPageState extends State<OrgPage> {
-    List<dynamic>? org;
+  List<dynamic>? org;
 
-    // Define the fetchUsers function here
-    void fetchOrg() async {
-      try {
-        final dynamic result = await queryAPI(getOrg);
-        if (result is QueryResult) {
-          setState(() {
-            org = result.data!['organisations'];
-          });
-        } else {
-          print('Invalid Query Result');
-        }
-      } catch (e) {
-        print('An error occurred: $e');
+  // using call_api.dart, fetch organisation
+  void fetchOrg() async {
+    try {
+      final dynamic result = await queryAPI(getOrg);
+      if (result is QueryResult) {
+        setState(() {
+          org = result.data!['organisations'];
+        });
+      } else {
+        print('Invalid Query Result');
       }
-    }
-
-    @override
-    void initState() {
-      super.initState();
-      fetchOrg();
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      if (org == null) {
-        // Show a loading circle while fetching data
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (org!.isEmpty) {
-        return const Text('No data found');
-      }
-
-      return ListView.builder(
-        itemCount: org!.length,
-        itemBuilder: (context, index) {
-          final name = org![index]['name'];
-          return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            name,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
-    );
-        },
-      );
+    } catch (e) {
+      print('An error occurred: $e');
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrg();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (org == null) {
+      // Show a loading circle while fetching data
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (org!.isEmpty) {
+      return const Text('No data found');
+    }
+
+    return ListView.builder(
+      itemCount: org!.length,
+      itemBuilder: (context, index) {
+        final name = org![index]['name'];
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
