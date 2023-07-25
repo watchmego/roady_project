@@ -11,13 +11,27 @@ final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
 const String getUsers = """
   query Users {
   users {
+    id, name, email
+  }
+}
+""";
+
+const String getOrg = """
+  query Organisations {
+  organisations {
     id, name
   }
 }
 """;
 
-const String ping = """
-  query Ping {
-    __typename
+Future<dynamic> queryAPI(String queryName) async {
+  final QueryResult result =
+      await client.value.query(QueryOptions(document: gql(queryName)));
+  if (result.hasException || result.data == null) {
+    return [];
+  
   }
-  """;
+
+  print(result);
+  return result;
+}

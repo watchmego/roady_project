@@ -29,7 +29,6 @@ class MainApp extends StatelessWidget {
                 const AppBarWidget(),
                 Consumer<APINotifier>(
                   builder: (context, apiNotifier, child) {
-                    print(apiNotifier.currentWidget);
                     return Expanded(
                       child: apiNotifier.currentWidget,
                     );
@@ -44,15 +43,8 @@ class MainApp extends StatelessWidget {
   }
 }
 
+//Provider for state
 class APINotifier extends ChangeNotifier {
-  List<Map<String, dynamic>> _searchList = [];
-
-  List<Map<String, dynamic>> get searchList => _searchList;
-
-  void setBlogPosts(List<Map<String, dynamic>> searchList) {
-    _searchList = searchList;
-    notifyListeners();
-  }
 
   Widget _currentWidget = OrgPage();
 
@@ -102,55 +94,123 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   }
 }
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-  
-        return Query(
-          options: QueryOptions(
-            document: gql(getUsers),
-          ),
-          builder: (result, {fetchMore, refetch}) {
-        print('querying....');
-        print(result);
-        if (result.hasException) {
-          print(result.exception.toString());
-        }
-        if (result.isLoading) {
-          print('loading...');
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (result.data == null) {
-          ('no data found');
-          return const Center(
-            child: Text("No article found!"),
-          );
-        }
-        
+  State<UserPage> createState() => _UserPageState();
+}
 
-        final users = result.data!['findFirstUser'];
-        print('found data $users');
-        return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final name = users['name'];
-              final email = users['email'];
-              return SearchRow(name: name, email: email);
-            });
+class _UserPageState extends State<UserPage> {
+  List<dynamic>? users;
+
+  // Define the fetchUsers function here
+  void fetchUsers() async {
+    try {
+      final dynamic result = await queryAPI(getUsers);
+      if (result is QueryResult) {
+        setState(() {
+          users = result.data!['users'];
+        });
+      } else {
+        print('Invalid Query Result');
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUsers();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (users == null) {
+      // Show a loading circle while fetching data
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (users!.isEmpty) {
+      return const Text('No data found');
+    }
+
+    return ListView.builder(
+      itemCount: users!.length,
+      itemBuilder: (context, index) {
+        final name = users![index]['name'];
+        final email = users![index]['email'];
+        return SearchRow(name: name, email: email);
       },
     );
   }
 }
 
-class OrgPage extends StatelessWidget {
+class OrgPage extends StatefulWidget {
   const OrgPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+  State<OrgPage> createState() => _OrgPageState();
 }
+
+class _OrgPageState extends State<OrgPage> {
+    List<dynamic>? org;
+
+    // Define the fetchUsers function here
+    void fetchOrg() async {
+      try {
+        final dynamic result = await queryAPI(getOrg);
+        if (result is QueryResult) {
+          setState(() {
+            org = result.data!['organisations'];
+          });
+        } else {
+          print('Invalid Query Result');
+        }
+      } catch (e) {
+        print('An error occurred: $e');
+      }
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      fetchOrg();
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      if (org == null) {
+        // Show a loading circle while fetching data
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (org!.isEmpty) {
+        return const Text('No data found');
+      }
+
+      return ListView.builder(
+        itemCount: org!.length,
+        itemBuilder: (context, index) {
+          final name = org![index]['name'];
+          return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
+    );
+        },
+      );
+    }
+  }
