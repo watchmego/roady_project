@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'api/call_api.dart';
 import 'views/search_row.dart';
+import './state/state_provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -44,16 +45,6 @@ class MainApp extends StatelessWidget {
 }
 
 //Provider for state
-class APINotifier extends ChangeNotifier {
-  Widget _currentWidget = OrgPage();
-
-  Widget get currentWidget => _currentWidget;
-
-  void changeCurrentWidget(Widget newWidget) {
-    _currentWidget = newWidget;
-    notifyListeners();
-  }
-}
 
 // app bar to switch between organisation and user view
 
@@ -74,6 +65,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     APINotifier apiNotifier = Provider.of<APINotifier>(context, listen: false);
 
     return AppBar(
+      leading: null,
       actions: <Widget>[
         TextButton(
           style: style,
@@ -85,10 +77,16 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         TextButton(
           style: style,
           onPressed: () {
-            apiNotifier.changeCurrentWidget(const UserPage());
-            print('changing to user page');
+            apiNotifier.changeCurrentWidget(const UserList());
           },
           child: const Text('User'),
+        ),
+        TextButton(
+          style: style,
+          onPressed: () {
+            apiNotifier.setLoggedIn(false);
+          },
+          child: const Text('Logout'),
         ),
       ],
     );
@@ -97,20 +95,22 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
 //Display Users
 
-class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+class UserList extends StatefulWidget {
+  const UserList({super.key});
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<UserList> createState() => _UserListState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _UserListState extends State<UserList> {
   List<dynamic>? users;
 
   // using call_api.dart, fetch users
   void fetchUsers() async {
     try {
       final dynamic result = await queryAPI(getUsers);
+      print('logging in');
+      print('result');
       if (result is QueryResult) {
         setState(() {
           users = result.data!['users'];
@@ -143,9 +143,10 @@ class _UserPageState extends State<UserPage> {
     return ListView.builder(
       itemCount: users!.length,
       itemBuilder: (context, index) {
+        final image = users![index]['imageSmall'];
         final name = users![index]['name'];
         final email = users![index]['email'];
-        return SearchRow(name: name, email: email);
+        return SearchRow(name: name, email: email, image: image);
       },
     );
   }
@@ -159,8 +160,6 @@ class OrgPage extends StatefulWidget {
   @override
   State<OrgPage> createState() => _OrgPageState();
 }
-
-
 
 class _OrgPageState extends State<OrgPage> {
   List<dynamic>? org;
