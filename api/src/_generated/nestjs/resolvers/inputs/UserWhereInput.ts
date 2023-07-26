@@ -54,6 +54,16 @@ export class UserWhereInput {
   })
   name?: StringNullableFilter | undefined;
 
+  @NestJS.Field(_type => StringFilter, {
+    nullable: true
+  })
+  imageSmall?: StringFilter | undefined;
+
+  @NestJS.Field(_type => StringFilter, {
+    nullable: true
+  })
+  imageLarge?: StringFilter | undefined;
+
   @NestJS.Field(_type => EnumUserRoleNullableFilter, {
     nullable: true
   })

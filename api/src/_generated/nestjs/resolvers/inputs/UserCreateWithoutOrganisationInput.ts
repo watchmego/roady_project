@@ -33,6 +33,16 @@ export class UserCreateWithoutOrganisationInput {
   })
   name?: string | undefined;
 
+  @NestJS.Field(_type => String, {
+    nullable: false
+  })
+  imageSmall!: string;
+
+  @NestJS.Field(_type => String, {
+    nullable: false
+  })
+  imageLarge!: string;
+
   @NestJS.Field(_type => UserRole, {
     nullable: true
   })

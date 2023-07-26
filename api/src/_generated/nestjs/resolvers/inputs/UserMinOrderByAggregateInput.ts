@@ -36,6 +36,16 @@ export class UserMinOrderByAggregateInput {
   @NestJS.Field(_type => SortOrder, {
     nullable: true
   })
+  imageSmall?: "asc" | "desc" | undefined;
+
+  @NestJS.Field(_type => SortOrder, {
+    nullable: true
+  })
+  imageLarge?: "asc" | "desc" | undefined;
+
+  @NestJS.Field(_type => SortOrder, {
+    nullable: true
+  })
   role?: "asc" | "desc" | undefined;
 
   @NestJS.Field(_type => SortOrder, {

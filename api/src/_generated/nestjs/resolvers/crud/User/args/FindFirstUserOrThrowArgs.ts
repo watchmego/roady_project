@@ -35,5 +35,5 @@ export class FindFirstUserOrThrowArgs {
   @NestJS.Field(_type => [UserScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "createdAt" | "updatedAt" | "email" | "name" | "role" | "organisationId"> | undefined;
+  distinct?: Array<"id" | "createdAt" | "updatedAt" | "email" | "name" | "imageSmall" | "imageLarge" | "role" | "organisationId"> | undefined;
 }

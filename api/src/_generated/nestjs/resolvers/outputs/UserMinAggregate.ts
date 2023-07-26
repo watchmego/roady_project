@@ -33,6 +33,16 @@ export class UserMinAggregate {
   })
   name!: string | null;
 
+  @NestJS.Field(_type => String, {
+    nullable: true
+  })
+  imageSmall!: string | null;
+
+  @NestJS.Field(_type => String, {
+    nullable: true
+  })
+  imageLarge!: string | null;
+
   @NestJS.Field(_type => UserRole, {
     nullable: true
   })

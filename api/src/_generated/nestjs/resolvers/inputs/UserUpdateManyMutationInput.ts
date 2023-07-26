@@ -36,6 +36,16 @@ export class UserUpdateManyMutationInput {
   })
   name?: NullableStringFieldUpdateOperationsInput | undefined;
 
+  @NestJS.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  imageSmall?: StringFieldUpdateOperationsInput | undefined;
+
+  @NestJS.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  imageLarge?: StringFieldUpdateOperationsInput | undefined;
+
   @NestJS.Field(_type => NullableEnumUserRoleFieldUpdateOperationsInput, {
     nullable: true
   })

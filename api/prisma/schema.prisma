@@ -35,6 +35,8 @@ model User {
   updatedAt      DateTime      @updatedAt @db.Timestamptz(6)
   email          String
   name           String?
+  imageSmall     String
+  imageLarge     String
   role           UserRole?
   organisation   Organisation? @relation(fields: [organisationId], references: [id])
   organisationId String?       @db.Uuid

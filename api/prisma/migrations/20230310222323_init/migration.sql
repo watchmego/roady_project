@@ -18,6 +18,8 @@ CREATE TABLE "User" (
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT,
+    "imageSmall" TEXT,
+    "imageLarge" TEXT,
     "role" "UserRole",
     "organisationId" UUID,
 

@@ -255,7 +255,7 @@ function applyTypeClassEnhanceConfig<
 
 const modelsInfo = {
   Organisation: ["id", "createdAt", "updatedAt", "name"],
-  User: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"]
+  User: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"]
 };
 
 type ModelNames = keyof typeof models;
@@ -297,15 +297,15 @@ const outputsInfo = {
   AggregateOrganisation: ["_count", "_min", "_max"],
   OrganisationGroupBy: ["id", "createdAt", "updatedAt", "name", "_count", "_min", "_max"],
   AggregateUser: ["_count", "_min", "_max"],
-  UserGroupBy: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId", "_count", "_min", "_max"],
+  UserGroupBy: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId", "_count", "_min", "_max"],
   AffectedRowsOutput: ["count"],
   OrganisationCount: ["users"],
   OrganisationCountAggregate: ["id", "createdAt", "updatedAt", "name", "_all"],
   OrganisationMinAggregate: ["id", "createdAt", "updatedAt", "name"],
   OrganisationMaxAggregate: ["id", "createdAt", "updatedAt", "name"],
-  UserCountAggregate: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId", "_all"],
-  UserMinAggregate: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
-  UserMaxAggregate: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"]
+  UserCountAggregate: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId", "_all"],
+  UserMinAggregate: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
+  UserMaxAggregate: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -351,19 +351,19 @@ const inputsInfo = {
   OrganisationWhereUniqueInput: ["id"],
   OrganisationOrderByWithAggregationInput: ["id", "createdAt", "updatedAt", "name", "_count", "_max", "_min"],
   OrganisationScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "name"],
-  UserWhereInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "role", "organisation", "organisationId"],
-  UserOrderByWithRelationInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisation", "organisationId"],
+  UserWhereInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisation", "organisationId"],
+  UserOrderByWithRelationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisation", "organisationId"],
   UserWhereUniqueInput: ["id"],
-  UserOrderByWithAggregationInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId", "_count", "_max", "_min"],
-  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
+  UserOrderByWithAggregationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId", "_count", "_max", "_min"],
+  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
   OrganisationCreateInput: ["id", "createdAt", "updatedAt", "name", "users"],
   OrganisationUpdateInput: ["id", "createdAt", "updatedAt", "name", "users"],
   OrganisationCreateManyInput: ["id", "createdAt", "updatedAt", "name"],
   OrganisationUpdateManyMutationInput: ["id", "createdAt", "updatedAt", "name"],
-  UserCreateInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisation"],
-  UserUpdateInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisation"],
-  UserCreateManyInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
-  UserUpdateManyMutationInput: ["id", "createdAt", "updatedAt", "email", "name", "role"],
+  UserCreateInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisation"],
+  UserUpdateInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisation"],
+  UserCreateManyInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
+  UserUpdateManyMutationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role"],
   UuidFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "mode", "not"],
   DateTimeFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   StringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not"],
@@ -379,9 +379,9 @@ const inputsInfo = {
   EnumUserRoleNullableFilter: ["equals", "in", "notIn", "not"],
   OrganisationRelationFilter: ["is", "isNot"],
   UuidNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "mode", "not"],
-  UserCountOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
-  UserMaxOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
-  UserMinOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
+  UserCountOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
+  UserMaxOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
+  UserMinOrderByAggregateInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
   StringNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not", "_count", "_min", "_max"],
   EnumUserRoleNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   UuidNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "mode", "not", "_count", "_min", "_max"],
@@ -407,19 +407,19 @@ const inputsInfo = {
   NestedIntNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   NestedEnumUserRoleNullableWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
   NestedUuidNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_min", "_max"],
-  UserCreateWithoutOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "role"],
+  UserCreateWithoutOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role"],
   UserCreateOrConnectWithoutOrganisationInput: ["where", "create"],
   UserCreateManyOrganisationInputEnvelope: ["data", "skipDuplicates"],
   UserUpsertWithWhereUniqueWithoutOrganisationInput: ["where", "update", "create"],
   UserUpdateWithWhereUniqueWithoutOrganisationInput: ["where", "data"],
   UserUpdateManyWithWhereWithoutOrganisationInput: ["where", "data"],
-  UserScalarWhereInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "role", "organisationId"],
+  UserScalarWhereInput: ["AND", "OR", "NOT", "id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role", "organisationId"],
   OrganisationCreateWithoutUsersInput: ["id", "createdAt", "updatedAt", "name"],
   OrganisationCreateOrConnectWithoutUsersInput: ["where", "create"],
   OrganisationUpsertWithoutUsersInput: ["update", "create"],
   OrganisationUpdateWithoutUsersInput: ["id", "createdAt", "updatedAt", "name"],
-  UserCreateManyOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "role"],
-  UserUpdateWithoutOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "role"]
+  UserCreateManyOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role"],
+  UserUpdateWithoutOrganisationInput: ["id", "createdAt", "updatedAt", "email", "name", "imageSmall", "imageLarge", "role"]
 };
 
 type InputTypesNames = keyof typeof inputTypes;

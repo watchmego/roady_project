@@ -53,6 +53,16 @@ export class UserScalarWhereWithAggregatesInput {
   })
   name?: StringNullableWithAggregatesFilter | undefined;
 
+  @NestJS.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  imageSmall?: StringWithAggregatesFilter | undefined;
+
+  @NestJS.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  imageLarge?: StringWithAggregatesFilter | undefined;
+
   @NestJS.Field(_type => EnumUserRoleNullableWithAggregatesFilter, {
     nullable: true
   })

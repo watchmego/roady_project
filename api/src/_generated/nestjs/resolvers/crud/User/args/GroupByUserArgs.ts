@@ -20,7 +20,7 @@ export class GroupByUserArgs {
   @NestJS.Field(_type => [UserScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "createdAt" | "updatedAt" | "email" | "name" | "role" | "organisationId">;
+  by!: Array<"id" | "createdAt" | "updatedAt" | "email" | "name" | "imageSmall" | "imageLarge" | "role" | "organisationId">;
 
   @NestJS.Field(_type => UserScalarWhereWithAggregatesInput, {
     nullable: true

@@ -35,6 +35,16 @@ export class UserCountAggregate {
   @NestJS.Field(_type => NestJS.Int, {
     nullable: false
   })
+  imageSmall!: number;
+
+  @NestJS.Field(_type => NestJS.Int, {
+    nullable: false
+  })
+  imageLarge!: number;
+
+  @NestJS.Field(_type => NestJS.Int, {
+    nullable: false
+  })
   role!: number;
 
   @NestJS.Field(_type => NestJS.Int, {
